@@ -21,7 +21,7 @@ import openfl.Assets;
 class PiratePigGame extends Sprite {
 	
 	
-	private static var NUM_COLUMNS = 8;
+	private static var NUM_COLUMNS = 8; 
 	private static var NUM_ROWS = 8;
 	
 	private static var tileImages = [ "images/game_bear.png", "images/game_bunny_02.png", "images/game_carrot.png", "images/game_lemon.png", "images/game_panda.png", "images/game_piratePig.png" ];
@@ -116,10 +116,10 @@ class PiratePigGame extends Sprite {
 	
 	
 	private function construct ():Void {
-		
+		// Логотип
 		Logo.smoothing = true;
 		addChild (Logo);
-		
+		// Загрузка и настройка шрифта
 		var font = Assets.getFont ("fonts/FreebooterUpdated.ttf");
 		var defaultFormat = new TextFormat (font.fontName, 60, 0x000000);
 		defaultFormat.align = TextFormatAlign.RIGHT;
@@ -129,7 +129,7 @@ class PiratePigGame extends Sprite {
 		#end
 		
 		var contentWidth = 75 * NUM_COLUMNS;
-		
+		// Результат
 		Score.x = contentWidth - 200;
 		Score.width = 200;
 		Score.y = 12;
@@ -331,15 +331,16 @@ class PiratePigGame extends Sprite {
 		
 	}
 	
-	
+	// Инициализация
 	private function initialize ():Void {
 		
-		currentScale = 1;
-		currentScore = 0;
+		currentScale = 1; // текуший размер
+		currentScore = 0; // текущий результат
 		
-		tiles = new Array <Array <Tile>> ();
-		usedTiles = new Array <Tile> ();
+		tiles = new Array <Array <Tile>> (); // Массив игровых плиток
+		usedTiles = new Array <Tile> (); // Массив используемых плиток
 		
+		// Заполняем массив пустотой
 		for (row in 0...NUM_ROWS) {
 			
 			tiles[row] = new Array <Tile> ();
@@ -359,12 +360,12 @@ class PiratePigGame extends Sprite {
 		
 	}
 	
-	
+	//Начало игры
 	public function newGame ():Void {
-		
+		// Обнуляем результат
 		currentScore = 0;
 		Score.text = "0";
-		
+		// очищаем сетку
 		for (row in 0...NUM_ROWS) {
 			
 			for (column in 0...NUM_COLUMNS) {
@@ -374,7 +375,7 @@ class PiratePigGame extends Sprite {
 			}
 			
 		}
-		
+		// наполняем сетку
 		for (row in 0...NUM_ROWS) {
 			
 			for (column in 0...NUM_COLUMNS) {
@@ -550,22 +551,24 @@ class PiratePigGame extends Sprite {
 		
 	}
 	
-	
+	// Обновление экрана
 	private function this_onEnterFrame (event:Event):Void {
-		
+		// Если нужно проверить ряды
 		if (needToCheckMatches) {
 			
-			var matchedTiles = new Array <Tile> ();
+			var matchedTiles = new Array <Tile> (); // Массив рядов
 			
+			// Поиск рядов по горизонтали
 			matchedTiles = matchedTiles.concat (findMatches (true));
+			// Поиск рядов по вертикали
 			matchedTiles = matchedTiles.concat (findMatches (false));
-			
+			// Очистка плиток попавших в ряд
 			for (tile in matchedTiles) {
 				
 				removeTile (tile.row, tile.column);
 				
 			}
-			
+			// Обновление результатов
 			if (matchedTiles.length > 0) {
 				
 				Score.text = Std.string (currentScore);

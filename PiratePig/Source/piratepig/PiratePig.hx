@@ -10,31 +10,33 @@ import flash.system.Capabilities;
 import flash.Lib;
 import openfl.Assets;
 
-
+/**
+ * Базовый класс игры, отриовка фона и инициализация игрового процесса
+ */
 class PiratePig extends Sprite {
 	
 	
-	private var Background:Bitmap;
-	private var Footer:Bitmap;
-	private var Game:PiratePigGame; 
+	private var Background:Bitmap; //Фон
+	private var Footer:Bitmap; // Нижний колонтитул
+	private var Game:PiratePigGame; // Игровое поле
 	
 	
 	public function new () {
 		
 		super ();
 		
-		initialize ();
-		construct ();
+		initialize (); // Инициализация
+		construct (); // Установки и вывод
 		
-		resize (stage.stageWidth, stage.stageHeight);
-		stage.addEventListener (Event.RESIZE, stage_onResize);
+		resize (stage.stageWidth, stage.stageHeight); // Изменение размеров игры под размеры экрана
+		stage.addEventListener (Event.RESIZE, stage_onResize); // Слушатель событий изменения размеров экрана\окна
 		
 	}
 	
 	
 	private function construct ():Void {
 		
-		Footer.smoothing = true;
+		Footer.smoothing = true; // Сглаживание
 		
 		addChild (Background);
 		addChild (Footer);
