@@ -36,22 +36,22 @@ class Tile extends Sprite {
 		
 	}
 	
-	
+	// инициализация
 	public function initialize ():Void {
 		
-		moving = false;
-		removed = false;
+		moving = false; // не двигается
+		removed = false; // не удалена
 		
-		mouseEnabled = true;
-		buttonMode = true;
-		
-		scaleX = 1;
+		mouseEnabled = true; // готова к перемещению
+		buttonMode = true; // в режиме кнопки
+		// нормальные размеры и прозрачность
+		scaleX = 1; 
 		scaleY = 1;
 		alpha = 1;
 		
 	}
 	
-	
+	// падение плитки
 	public function moveTo (duration:Float, targetX:Float, targetY:Float):Void {
 		
 		moving = true;
@@ -60,22 +60,22 @@ class Tile extends Sprite {
 		
 	}
 	
-	
+	// Удаление плиток
 	public function remove (animate:Bool = true):Void {
 		
-		#if (js && (dom || !openfl_html5))
-		animate = false;
+		#if (js && (dom || !openfl_html5)) // если js и (dom или не openfl_html5)
+		animate = false; // не анимировано
 		#end
 		
-		if (!removed) {
+		if (!removed) { // если не удалено
 			
-			if (animate) {
+			if (animate) { // если анимировано
 				
-				mouseEnabled = false;
-				buttonMode = false;
+				mouseEnabled = false; // запретить мышку
+				buttonMode = false; // отключить режим кнопки
 				
-				parent.addChildAt (this, 0);
-				Actuate.tween (this, 0.6, { alpha: 0, scaleX: 2, scaleY: 2, x: x - width / 2, y: y - height / 2 } ).onComplete (this_onRemoveComplete);
+				parent.addChildAt (this, 0);  // добавляем наследника 
+				Actuate.tween (this, 0.6, { alpha: 0, scaleX: 2, scaleY: 2, x: x - width / 2, y: y - height / 2 } ).onComplete (this_onRemoveComplete); // анимаця удаления (увеличивается и растворяется)
 				
 			} else {
 				
@@ -106,7 +106,7 @@ class Tile extends Sprite {
 	
 	private function this_onRemoveComplete ():Void {
 		
-		parent.removeChild (this);
+		parent.removeChild (this); // после анимации удаляем наследника (я хз зачем)
 		
 	}
 	

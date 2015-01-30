@@ -56,61 +56,61 @@ class PiratePigGame extends Sprite {
 		
 	}
 	
-	
+	// Добавляем плитки
 	private function addTile (row:Int, column:Int, animate:Bool = true):Void {
 		
-		var tile = null;
-		var type = Math.round (Math.random () * (tileImages.length - 1));
-		
+		var tile = null; // пустая плитка
+		var type = Math.round (Math.random () * (tileImages.length - 1)); // случайный тип плитки
+		// перебираем пустые плитки 
 		for (usedTile in usedTiles) {
-			
+			// Если используемая плитка удалена и наследует null, и имеет тип как овый случайный тип
 			if (usedTile.removed && usedTile.parent == null && usedTile.type == type) {
 				
-				tile = usedTile;
+				tile = usedTile; // присваиваем плитке используемый таи плитки (видимо для экономии памяти)
 				
 			}
 			
 		}
-		
+		// Если плитка пустая 
 		if (tile == null) {
-			
+			// создаём новую
 			tile = new Tile (tileImages[type]);
 			
 		}
-		
+		// инициализируем плитку
 		tile.initialize ();
-		
+		// применяем текущий тип и расположение в сетке
 		tile.type = type;
 		tile.row = row;
 		tile.column = column;
-		tiles[row][column] = tile;
+		tiles[row][column] = tile; // сохраняем с вассиве
 		
-		var position = getPosition (row, column);
-		
+		var position = getPosition (row, column); // получаем позицию на поле
+		// если в движении
 		if (animate) {
-			
+			// ЗАдаём изначальную позицию для падения
 			var firstPosition = getPosition (-1, column);
 			
-			#if (!js || openfl_html5)
-			tile.alpha = 0;
+			#if (!js || openfl_html5) // если html5 или не js
+			tile.alpha = 0; // делаем плитку прозрачной
 			#end
-			tile.x = firstPosition.x;
-			tile.y = firstPosition.y;
+			tile.x = firstPosition.x; // применяем позицию
+			tile.y = firstPosition.y; // к плитке
 			
-			tile.moveTo (0.15 * (row + 1), position.x, position.y);
-			#if (!js || openfl_html5)
-			Actuate.tween (tile, 0.3, { alpha: 1 } ).delay (0.15 * (row - 2)).ease (Quad.easeOut);
+			tile.moveTo (0.15 * (row + 1), position.x, position.y); // двигаем плитку на своё место
+			#if (!js || openfl_html5) // если html5 или не js
+			Actuate.tween (tile, 0.3, { alpha: 1 } ).delay (0.15 * (row - 2)).ease (Quad.easeOut); // двигаем тайл
 			#end
 			
-		} else {
+		} else { 
 			
 			tile.x = position.x;
 			tile.y = position.y;
 			
 		}
 		
-		TileContainer.addChild (tile);
-		needToCheckMatches = true;
+		TileContainer.addChild (tile); // размещаем плитки на поле
+		needToCheckMatches = true; // проверяем ряды
 		
 	}
 	
@@ -370,7 +370,7 @@ class PiratePigGame extends Sprite {
 			
 			for (column in 0...NUM_COLUMNS) {
 				
-				removeTile (row, column, false);
+				removeTile (row, column, false); // удаляем плитки с поля
 				
 			}
 			
@@ -393,14 +393,14 @@ class PiratePigGame extends Sprite {
 		
 	}
 	
-	
+	// удаление плитки
 	public function removeTile (row:Int, column:Int, animate:Bool = true):Void {
-		
+		// текущая плитка
 		var tile = tiles[row][column];
-		
+		// Если не пустая
 		if (tile != null) {
 			
-			tile.remove (animate);
+			tile.remove (animate); // Удаляем плитку
 			usedTiles.push (tile);
 			
 		}
