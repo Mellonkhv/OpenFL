@@ -136,30 +136,30 @@ class PiratePigGame extends Sprite {
 		Score.selectable = false;
 		Score.defaultTextFormat = defaultFormat;
 		
-		#if (!js || openfl_html5)
-		Score.filters = [ new BlurFilter (1.5, 1.5), new DropShadowFilter (1, 45, 0, 0.2, 5, 5) ];
-		#else
-		Score.y = 0;
+		#if (!js || openfl_html5) // если html5 или не js
+		Score.filters = [ new BlurFilter (1.5, 1.5), new DropShadowFilter (1, 45, 0, 0.2, 5, 5) ]; // включаем какие-то фильтры видимо для большей красоты
+		#else // иначе просто выставляем координаты
+		Score.y = 0; 
 		Score.x += 90;
 		#end
 		
-		Score.embedFonts = true;
-		addChild (Score);
-		
-		Background.y = 85;
+		Score.embedFonts = true; // используем встроеные шрифты
+		addChild (Score); // выводим результат
+		//Натройка фона
+		Background.y = 85; 
 		Background.graphics.beginFill (0xFFFFFF, 0.4);
 		Background.graphics.drawRect (0, 0, contentWidth, 75 * NUM_ROWS);
 		
-		#if (!js || openfl_html5)
-		Background.filters = [ new BlurFilter (10, 10) ];
+		#if (!js || openfl_html5) // если html5 или не js
+		Background.filters = [ new BlurFilter (10, 10) ]; // настройки фона
 		addChild (Background);
 		#end
-		
+		// Установки игрового поля
 		TileContainer.x = 14;
 		TileContainer.y = Background.y + 14;
-		TileContainer.addEventListener (MouseEvent.MOUSE_DOWN, TileContainer_onMouseDown);
-		Lib.current.stage.addEventListener (MouseEvent.MOUSE_UP, stage_onMouseUp);
-		addChild (TileContainer);
+		TileContainer.addEventListener (MouseEvent.MOUSE_DOWN, TileContainer_onMouseDown); // Слушатель нажатия клавиши мышки 
+		Lib.current.stage.addEventListener (MouseEvent.MOUSE_UP, stage_onMouseUp); // слушатель отпускания мыши
+		addChild (TileContainer); 
 		
 		IntroSound = Assets.getSound ("soundTheme");
 		Sound3 = Assets.getSound ("sound3");
