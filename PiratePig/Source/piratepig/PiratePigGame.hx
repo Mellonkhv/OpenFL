@@ -171,40 +171,40 @@ class PiratePigGame extends Sprite {
 	
 	private function dropTiles ():Void {
 		
-		for (column in 0...NUM_COLUMNS) {
+		for (column in 0...NUM_COLUMNS) { // Перебираем столбцы
 			
-			var spaces = 0;
+			var spaces = 0; // пустое пространство для плиток
 			
-			for (row in 0...NUM_ROWS) {
+			for (row in 0...NUM_ROWS) { // Перебираем строки
 				
-				var index = (NUM_ROWS - 1) - row;
-				var tile = tiles[index][column];
+				var index = (NUM_ROWS - 1) - row; // Меняем порядок
+				var tile = tiles[index][column]; // Перебраем столбец снизу в верх
 				
-				if (tile == null) {
+				if (tile == null) { // Если плитка удалена 
 					
-					spaces++;
+					spaces++; // Добавляем пустое пространство
 					
-				} else {
+				} else { // Иначе
 					
-					if (spaces > 0) {
-						
+					if (spaces > 0) { // Если есть пустоты
+						// получаем позицию индекс + пустота в колонке
 						var position = getPosition (index + spaces, column);
-						tile.moveTo (0.15 * spaces, position.x,position.y);
+						tile.moveTo (0.15 * spaces, position.x,position.y); // Роняем плитку
 						
-						tile.row = index + spaces;
-						tiles[index + spaces][column] = tile;
-						tiles[index][column] = null;
+						tile.row = index + spaces; // сдвигаем плитку на новую позицию
+						tiles[index + spaces][column] = tile; // сохраняем положение плитки в массиве
+						tiles[index][column] = null; // очищаем старое положение
 						
-						needToCheckMatches = true;
+						needToCheckMatches = true; // проверяем на возникновение рядов
 						
 					}
 					
 				}
 				
 			}
-			
+			// перебираем пустоты
 			for (i in 0...spaces) {
-				
+				// заполняем пустоты плитками
 				var row = (spaces - 1) - i;
 				addTile (row, column);
 				
@@ -324,9 +324,10 @@ class PiratePigGame extends Sprite {
 		
 	}
 	
-	
+	// Получаем позицию на экране
 	private function getPosition (row:Int, column:Int):Point {
-		
+		// какой-то свой замут с размерами
+		//                            73               73
 		return new Point (column * (57 + 16), row * (57 + 16));
 		
 	}
@@ -380,15 +381,15 @@ class PiratePigGame extends Sprite {
 			
 			for (column in 0...NUM_COLUMNS) {
 				
-				addTile (row, column, false);
+				addTile (row, column, false); // Добавляем плитки
 				
 			}
 			
 		}
 		
-		IntroSound.play ();
+		IntroSound.play (); // проигрываем вступительную музыку
 		
-		removeEventListener (Event.ENTER_FRAME, this_onEnterFrame);
+		removeEventListener (Event.ENTER_FRAME, this_onEnterFrame); 
 		addEventListener (Event.ENTER_FRAME, this_onEnterFrame);
 		
 	}
@@ -401,11 +402,11 @@ class PiratePigGame extends Sprite {
 		if (tile != null) {
 			
 			tile.remove (animate); // Удаляем плитку
-			usedTiles.push (tile);
+			usedTiles.push (tile); // Добавляем плитку в используемые (карман для плиток)
 			
 		}
 		
-		tiles[row][column] = null;
+		tiles[row][column] = null; // Убираем плитку с поля
 		
 	}
 	
@@ -565,14 +566,14 @@ class PiratePigGame extends Sprite {
 			// Очистка плиток попавших в ряд
 			for (tile in matchedTiles) {
 				
-				removeTile (tile.row, tile.column);
+				removeTile (tile.row, tile.column); // убеваем тайлы
 				
 			}
 			// Обновление результатов
 			if (matchedTiles.length > 0) {
 				
-				Score.text = Std.string (currentScore);
-				dropTiles ();
+				Score.text = Std.string (currentScore); // Выводим результат
+				dropTiles (); // раняем плитки с верху в низ
 				
 			}
 			
