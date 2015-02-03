@@ -214,17 +214,17 @@ class PiratePigGame extends Sprite {
 		
 	}
 	
-	
+	// Поиск рядов (в строчку или в столбик, считать очки или нет)
 	private function findMatches (byRow:Bool, accumulateScore:Bool = true):Array <Tile> {
-		
+		// Массив для найденых рядов
 		var matchedTiles = new Array <Tile> ();
 		
-		var max:Int;
-		var secondMax:Int;
-		
+		var max:Int; 		// для пущей уневерсальности 
+		var secondMax:Int;	// если стка будет не равномерной
+		// Если выбран поиск по горизонтали
 		if (byRow) {
 			
-			max = NUM_ROWS;
+			max = NUM_ROWS; 
 			secondMax = NUM_COLUMNS;
 			
 		} else {
@@ -236,52 +236,52 @@ class PiratePigGame extends Sprite {
 		
 		for (index in 0...max) {
 			
-			var matches = 0;
-			var foundTiles = new Array <Tile> ();
-			var previousType = -1;
+			var matches = 0; // ряды
+			var foundTiles = new Array <Tile> (); // Массив найденых плиток
+			var previousType = -1; // предыдущий тип
 			
 			for (secondIndex in 0...secondMax) {
 				
 				var tile:Tile;
 				
-				if (byRow) {
+				if (byRow) { // если поиск по горизонтали
 					
-					tile = tiles[index][secondIndex];
+					tile = tiles[index][secondIndex]; 
 					
-				} else {
+				} else { // если поиск по вертикали
 					
 					tile = tiles[secondIndex][index];
 					
 				}
-				
+				// если плитка пустая и не двигается
 				if (tile != null && !tile.moving) {
-					
+					// если предыдущий тип не равен -1
 					if (previousType == -1) {
 						
-						previousType = tile.type;
-						foundTiles.push (tile);
+						previousType = tile.type; // Сохраняем текущий тип
+						foundTiles.push (tile); // сохраняем текущую плитку
 						continue;
 						
-					} else if (tile.type == previousType) {
+					} else if (tile.type == previousType) { // если текущий тип равен предыдущему
 						
-						foundTiles.push (tile);
-						matches++;
+						foundTiles.push (tile); // сохраняем плитку
+						matches++; // прибовляем к переменной "вряд"
 						
 					}
 					
 				}
-				
+				// Если плитки нет или она двигается или тип плитки не равен предыдущей или второй индекс равен secondmax-1
 				if (tile == null || tile.moving || tile.type != previousType || secondIndex == secondMax - 1) {
-					
+					// если в ряду 2 или более и предыдущий тип не равен -1
 					if (matches >= 2 && previousType != -1) {
 						
-						if (accumulateScore) {
+						if (accumulateScore) { // если результат засчитывается
 							
-							if (matches > 3) {
+							if (matches > 3) { // если вряд более 3х плиток
 								
-								Sound5.play ();
+								Sound5.play (); // проиграть звук
 								
-							} else if (matches > 2) {
+							} else if (matches > 2) {// 
 								
 								Sound4.play ();
 								
