@@ -410,49 +410,49 @@ class PiratePigGame extends Sprite {
 		
 	}
 	
-	
-	public function resize (newWidth:Int, newHeight:Int):Void {
+	// изменение размера игры 
+	public function resize (newWidth:Int, newHeight:Int):Void { 
 		
-		var maxWidth = newWidth * 0.90;
-		var maxHeight = newHeight * 0.86;
+		var maxWidth = newWidth * 0.90; // 576 = 640 * 0,9
+		var maxHeight = newHeight * 0.86; // 412,8 = 480 * 0,86
 		
-		currentScale = 1;
-		scaleX = 1;
-		scaleY = 1;
+		currentScale = 1; // текущий размер
+		scaleX = 1; // размер по х
+		scaleY = 1; // размер по у
 		
-		#if (js || !openfl_html5)
+		#if (js || !openfl_html5)// Если js или не html5
 		
-		var currentWidth = 75 * NUM_COLUMNS;
+		var currentWidth = 75 * NUM_COLUMNS; 
 		var currentHeight = 75 * NUM_ROWS + 85;
 		
 		#else
 		
-		var currentWidth = width;
-		var currentHeight = height;
+		var currentWidth = width; // текущая ширина
+		var currentHeight = height; // текущая высота
 		
 		#end
-		
+		// Если текущая ширина больше максимальной или текушая высота больше максимальной
 		if (currentWidth > maxWidth || currentHeight > maxHeight) {
 			
-			var maxScaleX = maxWidth / currentWidth;
-			var maxScaleY = maxHeight / currentHeight;
+			var maxScaleX = maxWidth / currentWidth; //максимальный размер по х
+			var maxScaleY = maxHeight / currentHeight;// максимальный размер по у
 			
-			if (maxScaleX < maxScaleY) {
+			if (maxScaleX < maxScaleY) { // если максимальный х больше у
 				
-				currentScale = maxScaleX;
+				currentScale = maxScaleX; // текущий размер = максимальному размер по х
 				
-			} else {
+			} else { // Иначе
 				
-				currentScale = maxScaleY;
+				currentScale = maxScaleY; // максимальному размеру по у
 				
 			}
-			
-			scaleX = currentScale;
+			// примеряем полученый размер к размеру X и Y
+			scaleX = currentScale; 
 			scaleY = currentScale;
 			
 		}
-		
-		x = newWidth / 2 - (currentWidth * currentScale) / 2;
+		// получаем X													старый вариант
+		x = (newWidth * .5) - ((currentWidth * currentScale) * .5); //x = newWidth / 2 - (currentWidth * currentScale) / 2;
 		
 	}
 	

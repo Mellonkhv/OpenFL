@@ -53,14 +53,14 @@ class PiratePig extends Sprite {
 		
 	}
 	
-	
+	// изменяем размер
 	private function resize (newWidth:Int, newHeight:Int):Void {
 		
 		Background.width = newWidth;
 		Background.height = newHeight;
-		
+		// получаем переменные размеров
 		Game.resize (newWidth, newHeight);
-		
+		// применяем полученые размеры
 		Footer.scaleX = Game.currentScale;
 		Footer.scaleY = Game.currentScale;
 		Footer.x = newWidth / 2 - Footer.width / 2;
