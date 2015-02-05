@@ -456,36 +456,36 @@ class PiratePigGame extends Sprite {
 		
 	}
 	
-	
+	// Смена плиток (перенашиваемая плитка, строка замены, столбец замены)
 	private function swapTile (tile:Tile, targetRow:Int, targetColumn:Int):Void {
-		
+		// Если столбец замены больше или равен 0 и меньше количества столбцов и строка замены больше или равен 0 и меньше количества строк
 		if (targetColumn >= 0 && targetColumn < NUM_COLUMNS && targetRow >= 0 && targetRow < NUM_ROWS) {
 			
-			var targetTile = tiles[targetRow][targetColumn];
+			var targetTile = tiles[targetRow][targetColumn]; // сохраняем плитку с которой будет производиться замена
 			
-			if (targetTile != null && !targetTile.moving) {
+			if (targetTile != null && !targetTile.moving) { // Если целевая плитка не пустая и не двигается
 				
-				tiles[targetRow][targetColumn] = tile;
-				tiles[tile.row][tile.column] = targetTile;
-				
+				tiles[targetRow][targetColumn] = tile; 		// меняем плитки
+				tiles[tile.row][tile.column] = targetTile;	// между собой
+				// Если при поиске рядов совпали типы меняемых плиток (универсально, но неэффективно)
 				if (findMatches (true, false).length > 0 || findMatches (false, false).length > 0) {
-					
-					targetTile.row = tile.row;
+					// производим замену
+					targetTile.row = tile.row; 
 					targetTile.column = tile.column;
 					tile.row = targetRow;
 					tile.column = targetColumn;
-					var targetTilePosition = getPosition (targetTile.row, targetTile.column);
-					var tilePosition = getPosition (tile.row, tile.column);
+					var targetTilePosition = getPosition (targetTile.row, targetTile.column); //получаем новые координаты целевой плитки
+					var tilePosition = getPosition (tile.row, tile.column); // получаем новые координаты текущей плитки
 					
-					targetTile.moveTo (0.3, targetTilePosition.x, targetTilePosition.y);
-					tile.moveTo (0.3, tilePosition.x, tilePosition.y);
+					targetTile.moveTo (0.3, targetTilePosition.x, targetTilePosition.y); // анимация перемещения
+					tile.moveTo (0.3, tilePosition.x, tilePosition.y); // анимация перемещения
 					
-					needToCheckMatches = true;
+					needToCheckMatches = true; // проверяем на ряды
 					
-				} else {
+				} else { // иначе
 					
-					tiles[targetRow][targetColumn] = targetTile;
-					tiles[tile.row][tile.column] = tile;
+					tiles[targetRow][targetColumn] = targetTile; // всё остаётся на 
+					tiles[tile.row][tile.column] = tile;		 // своих местах
 					
 				}
 				
@@ -502,46 +502,46 @@ class PiratePigGame extends Sprite {
 	
 	
 	
-	
+	// слушатель отпускания клавиши мыши
 	private function stage_onMouseUp (event:MouseEvent):Void {
-		
+		// если записано положение мыши и выбрана плитка и плитка не движется
 		if (cacheMouse != null && selectedTile != null && !selectedTile.moving) {
 			
 			var differenceX = event.stageX - cacheMouse.x;
 			var differenceY = event.stageY - cacheMouse.y;
-			
+			// Если абсолютное число differenceX или differenceY больше 10
 			if (Math.abs (differenceX) > 10 || Math.abs (differenceY) > 10) {
 				
-				var swapToRow = selectedTile.row;
-				var swapToColumn = selectedTile.column;
-				
+				var swapToRow = selectedTile.row; // сохраняем строку
+				var swapToColumn = selectedTile.column; // сохраняем столбц
+				// Если абсолютное число differenceX больше differenceY
 				if (Math.abs (differenceX) > Math.abs (differenceY)) {
-					
+					// Если differenceX имеет отрицательное значение
 					if (differenceX < 0) {
 						
-						swapToColumn --;
+						swapToColumn --; // дикрементируем сохранённый столбец
 						
-					} else {
+					} else { // Иначе
 						
-						swapToColumn ++;
+						swapToColumn ++; // инкрементируем
 						
 					}
 					
-				} else {
-					
+				} else { // Иначе
+					// Если differenceY имеет отрицательное значение
 					if (differenceY < 0) {
 						
-						swapToRow --;
+						swapToRow --; // дикрементируем сохнанённую строку
 						
-					} else {
+					} else { //Иначе
 						
-						swapToRow ++;
+						swapToRow ++; // инкрементируем
 						
 					}
 					
 				}
 				
-				swapTile (selectedTile, swapToRow, swapToColumn);
+				swapTile (selectedTile, swapToRow, swapToColumn); // Меняем плитки местами
 				
 			}
 			
@@ -581,15 +581,15 @@ class PiratePigGame extends Sprite {
 		
 	}
 	
-	
+	// Слуштель нажатой клавиши мышки
 	private function TileContainer_onMouseDown (event:MouseEvent):Void {
 		
-		if (Std.is (event.target, Tile)) {
+		if (Std.is (event.target, Tile)) {// если то во что кликнула мышь является плиткой
 			
-			selectedTile = cast event.target;
-			cacheMouse = new Point (event.stageX, event.stageY);
+			selectedTile = cast event.target; // ДЕлаем небезопасный слепок выббраной плитки
+			cacheMouse = new Point (event.stageX, event.stageY); // записываем положение мыши на поле
 			
-		} else {
+		} else { // Иначе обнуляем
 			
 			cacheMouse = null;
 			selectedTile = null;
